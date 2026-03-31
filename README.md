@@ -49,7 +49,6 @@ Messages must be valid JSON strings following this structure:
 ```
 - `event`: Use `room-state` for messages that should be cached for late joiners.
 
-
 # Lambo01 Master
 
 A Flutter application designed for synchronized web browsing and automated betting using a Master/Slave architecture.
@@ -94,3 +93,4 @@ This project requires a WebSocket server to coordinate communication between Mas
    - Enter any website URL or select a site from the "Recent Sites" list
    - Click "Browse" to navigate (the app will verify the site's status first)
 4. All Slave devices will replicate the Master's actions in real-time
+
