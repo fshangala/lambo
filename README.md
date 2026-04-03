@@ -66,19 +66,22 @@ This application connects to a WebSocket room to establish a synchronized browsi
 
 - **Universal Site Support**: Manually enter any website URL to initiate a synchronized session.
 - **URL Validation**: Automated HEAD requests verify website reachability before navigation.
-- **Recent Sites Persistence**: Automatically saves visited sites to local storage (`SharedPreferences`) for quick access.
+- **Recent Sites Persistence**: Automatically saves visited sites to local storage (`SharedPreferences`) for quick access, with cloud synchronization via Supabase for authenticated users.
 - **Favicon Integration**: Displays website favicons in the "Recent Sites" grid using the Google S2 API.
 - **Master/Slave Synchronization**: High-fidelity replication of browsing sessions across multiple devices.
 - **Action Replication**: JavaScript injection on Slave devices allows for real-time replication of interactions (e.g., clicks, input changes) performed on the Master.
+- **Volume Event Integration**: A dedicated page for sending click events via the hardware Volume Up button, with real-time logs and native Android support.
+- **User Authentication and Profiles**: Secure authentication via Supabase with email verification, profile management, and access control based on active status.
+- **Usage Tracking**: Enforces daily time limits (2 hours) for unauthenticated users and tracks usage for inactive authenticated users.
+- **Proxy Configuration**: Authenticated users can configure proxy settings, including authentication, for enhanced browsing capabilities.
 - **About Page**: View application version and release history directly from the GitHub repository.
-- **Screen Management**: Automatically keeps the screen awake on Slave devices to ensure uninterrupted synchronization during sessions.
+- **Screen Management**: Automatically keeps the screen awake on both Master and Slave devices to ensure uninterrupted synchronization during sessions.
 
 ## Getting Started
 
 This project requires a WebSocket server to coordinate communication between Master and Slave devices.
 
 - Connect devices to the same network as your WebSocket server
-
 - Configure the WebSocket connection in the app settings:
    - Server address
    - Server port
@@ -89,8 +92,9 @@ This project requires a WebSocket server to coordinate communication between Mas
 
 1. Set one device as "Master" and others as "Slaves"
 2. Join the same WebSocket room on all devices (the app automatically attempts to connect on startup if settings are saved)
-3. On the Master device:
+3. Authenticate if needed: Unauthenticated users have limited access; log in via Supabase for full features and extended usage.
+4. On the Master device:
    - Enter any website URL or select a site from the "Recent Sites" list
    - Click "Browse" to navigate (the app will verify the site's status first)
-4. All Slave devices will replicate the Master's actions in real-time
+5. All Slave devices will replicate the Master's actions in real-time
 
