@@ -22,7 +22,9 @@ function App() {
   const [release, setRelease] = useState<Release | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(
+    () => new URLSearchParams(window.location.search).get('registration_success') === 'true',
+  );
   const basePath = import.meta.env.BASE_URL;
 
   useEffect(() => {
@@ -41,26 +43,14 @@ function App() {
       });
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('registration_success') === 'true') {
-      setIsSuccessModalOpen(true);
-    }
-  }, []);
-
   const handleCloseSuccessModal = () => {
     setIsSuccessModalOpen(false);
     window.history.replaceState(null, '', window.location.pathname);
   };
 
-  const getAssetUrl = (pattern: string) => {
-    if (!release) return '#';
-    const asset = release.assets.find(a => a.name.toLowerCase().includes(pattern.toLowerCase()));
-    return asset ? asset.browser_download_url : '#';
-  };
-
-  const serverUrl = getAssetUrl('lambo_server.exe');
-  const appUrl = getAssetUrl('app-release.apk');
+  const appUrl = release?.assets.find(asset =>
+    asset.name.toLowerCase().includes('app-release.apk'),
+  )?.browser_download_url ?? null;
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
@@ -69,7 +59,7 @@ function App() {
       <HeroSection releaseTag={release?.tag_name ?? null} />
       <OverviewSection />
       <ScreenshotsSection basePath={basePath} />
-      <DownloadSection loading={loading} error={error} serverUrl={serverUrl} appUrl={appUrl} />
+      <DownloadSection loading={loading} error={error} appUrl={appUrl} />
       <ContactSection basePath={basePath} />
       <Footer />
     </div>
